@@ -1,0 +1,44 @@
+---
+title: "Model Configurations"
+description: "Configure the AI model powering your Ortavox Agent"
+---
+
+# Model Configurations
+
+The `model` object in your Agent configuration defines which language model processes the conversation. It is a **required** field when creating or updating an Agent.
+
+## Schema
+
+```json
+{
+  "model": {
+    "provider": "openai",
+    "model": "gpt-4o-mini",
+    "system_prompt": "You are a helpful AI assistant.",
+    "temperature": 0.8,
+    "max_tokens": 3500,
+    "tools": []
+  }
+}
+```
+
+## Parameters
+
+| Property | Type | Required | Description |
+|---|---|---|---|
+| `provider` | `string` | ✅ | LLM provider (see supported providers below) |
+| `model` | `string` | ✅ | Model ID from the provider (e.g. `gpt-4o-mini`) |
+| `system_prompt` | `string` | ✅ | The system instruction given to the model |
+| `temperature` | `number` | ✅ | Randomness level — `0.0` to `2.0`, default `0.8` |
+| `max_tokens` | `number` | ✅ | Max tokens per response, default `3500` |
+| `tools` | `array` | ❌ | List of tool IDs to attach to this model, default `[]` |
+
+## Supported Providers
+
+| Provider | `provider` value |
+|---|---|
+| OpenAI | `openai` |
+| Anthropic | `anthropic` |
+| Google Gemini | `google` |
+| Groq | `groq` |
+| DeepSeek | `deep-seek` |

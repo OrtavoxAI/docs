@@ -1,0 +1,52 @@
+---
+title: "LLM"
+description: "Supported LLM providers and model selection"
+---
+
+# LLM
+
+Ortavox supports multiple leading AI providers out-of-the-box. You select the LLM provider and model as part of the `model` configuration when creating or updating your Agent.
+
+## Supported Providers & Models
+
+### OpenAI
+```json
+{ "provider": "openai", "model": "gpt-4o-mini" }
+```
+Recommended starter model. Other popular options: `gpt-4o`, `gpt-4-turbo`.
+
+---
+
+### Anthropic
+```json
+{ "provider": "anthropic", "model": "claude-3-5-sonnet-20241022" }
+```
+Excellent at following nuanced instructions and long-context reasoning.
+
+---
+
+### Google
+```json
+{ "provider": "google", "model": "gemini-1.5-flash" }
+```
+Strong multilingual performance and fast responses.
+
+---
+
+### Groq
+```json
+{ "provider": "groq", "model": "llama-3.3-70b-versatile" }
+```
+Best-in-class speed for latency-sensitive use cases.
+
+---
+
+### DeepSeek
+```json
+{ "provider": "deep-seek", "model": "deepseek-chat" }
+```
+Cost-efficient with strong reasoning capabilities.
+
+---
+
+> **Tip**: Keep `temperature` between `0.5` and `0.9` for conversational agents. Lower values make responses more deterministic; higher values create more variability.

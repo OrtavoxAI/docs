@@ -1,0 +1,159 @@
+# yaml-language-server: $schema=https://schema.buildwithfern.dev/docs-yml.json
+
+instances:
+  - url: https://ortavox.docs.buildwithfern.com
+
+title: Ortavox
+
+favicon: assets/favicon.png
+
+logo:
+  light: assets/logo_black.png
+  dark: assets/logo.png
+  href: https://ortavox.com
+  height: 40
+
+colors:
+  accentPrimary:
+    light: "#2563eb"
+    dark: "#3b82f6"
+  background:
+    light: "#ffffff"
+    dark: "#000000"
+  header-background:
+    light: "#ffffff"
+    dark: "#000000"
+
+
+
+tabs:
+  documentation:
+    display-name: Documentation
+    icon: book
+    slug: documentation
+  api-reference:
+    slug: api-reference
+    icon: terminal
+    display-name: API Reference
+  sdks:
+    display-name: SDKs
+    icon: code
+    slug: sdks
+
+layout:
+  tabs-placement: header
+  searchbar-placement: header
+  header-height: 80px
+  page-width: full
+  content-width: 55rem
+  sidebar-width: 300px
+
+navigation:
+  - tab: documentation
+    layout:
+      - section: Get started
+        contents:
+          - page: Introduction
+            icon: fa-light fa-info-circle
+            path: quickstart/introduction.mdx
+          - page: Architecture
+            icon: fa-light fa-diagram-project
+            path: quickstart/architecture.mdx
+          - page: Web calls
+            icon: fa-light fa-browser
+            path: quickstart/web-calls.mdx
+          - page: Phone calls
+            icon: fa-solid fa-phone
+            path: quickstart/phone-calls.mdx
+
+      - section: Agents
+        contents:
+          - page: Overview
+            path: agents/overview.mdx
+            icon: fa-light fa-brain
+          - page: Voices
+            path: agents/voices.mdx
+            icon: fa-light fa-waveform-lines
+
+      - section: Tools
+        contents:
+          - page: Overview
+            path: tools/overview.mdx
+            icon: fa-light fa-toolbox
+
+      - section: Configurations
+        contents:
+          - page: Model Configurations
+            path: configurations/model-configurations.mdx
+            icon: fa-light fa-sliders
+          - page: LLM
+            path: configurations/llm.mdx
+            icon: fa-light fa-brain-circuit
+          - page: Voice
+            path: configurations/voice.mdx
+            icon: fa-light fa-waveform-lines
+          - page: Transcriber
+            path: configurations/transcriber.mdx
+            icon: fa-light fa-microphone
+          - page: API Keys and Service Keys
+            path: configurations/api-keys.mdx
+            icon: fa-light fa-key
+          - page: Tracing
+            path: configurations/tracing.mdx
+            icon: fa-light fa-chart-line
+
+      - section: Phone Numbers
+        contents:
+          - page: Overview
+            path: phone-numbers/overview.mdx
+            icon: fa-light fa-phone
+
+      - section: Calls
+        contents:
+          - page: Overview
+            path: calls/overview.mdx
+            icon: fa-light fa-phone-arrow-up-right
+
+      - section: Resources
+        contents:
+          - page: FAQ
+            path: resources/faq.mdx
+            icon: fa-light fa-circle-question
+
+  - tab: api-reference
+    layout:
+      - api: API Reference
+        api-name: api
+        flattened: true
+        skip-slug: true
+        paginated: true
+        snippets:
+          typescript: "ortavox-sdk"
+          python: "ortavox-sdk"
+
+  - tab: sdks
+    layout:
+      - section: Server SDKs
+        contents:
+          - link: TypeScript (NPM)
+            href: https://github.com/OrtaVoxAI/ortavox-typescript-sdk
+            icon: fa-brands fa-js
+          - link: Python (PyPI)
+            href: https://github.com/OrtaVoxAI/ortavox-python-sdk
+            icon: fa-brands fa-python
+
+navbar-links:
+  - type: minimal
+    text: Website
+    href: https://ortavox.com
+  - type: filled
+    text: Dashboard
+    rightIcon: fa-solid fa-chevron-right
+    href: https://dashboard.ortavox.com
+    rounded: true
+
+footer-links:
+  github: https://github.com/OrtaVoxAI
+  twitter: https://twitter.com/ortavox
+  discord: https://discord.gg/ortavox
+  linkedin: https://www.linkedin.com/company/ortavox

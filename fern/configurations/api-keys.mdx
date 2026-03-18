@@ -1,0 +1,58 @@
+---
+title: "API Keys and Service Keys"
+description: "Creating and managing Ortavox API keys for authentication"
+---
+
+# API Keys and Service Keys
+
+Ortavox uses two types of API keys to authenticate requests.
+
+## Key Types
+
+| Type | Prefix | Usage |
+|---|---|---|
+| **Private** | `sk_live_...` | Server-side only — full API access, never expose in browser |
+| **Public** | `pk_live_...` | Client-side safe — restricted to specific agents and origins |
+
+## Creating an API Key
+
+```bash
+POST /v1/api-keys
+Authorization: Bearer <your-token>
+
+{
+  "name": "Production API Key",
+  "tag": "private",
+  "permissions": ["read:agents", "create:calls"],
+  "restrictions": {
+    "allowedAgentsIds": ["agent-uuid-1", "agent-uuid-2"],
+    "allowedOrigins": ["https://yourapp.com"]
+  },
+  "expiresAt": "2026-12-31T23:59:59Z"
+}
+```
+
+## Parameters
+
+| Property | Type | Required | Description |
+|---|---|---|---|
+| `name` | `string` | ✅ | Human-readable label for the key |
+| `tag` | `string` | ❌ | `private` (default) or `public` |
+| `permissions` | `array` | ❌ | Default: `["read:agents", "create:calls"]` |
+| `restrictions.allowedAgentsIds` | `array` | ❌ | Restrict key to specific agent IDs |
+| `restrictions.allowedOrigins` | `array` | ❌ | Restrict key to specific origins (CORS) |
+| `expiresAt` | `datetime` | ❌ | Optional expiry date for the key |
+
+> **Important**: The full key value (`sk_live_...`) is only shown **once** at creation time. Store it securely immediately.
+
+## Using a Key
+
+Pass your API key as a Bearer token or as the `x-api-key` header:
+
+```bash
+# As Bearer token
+Authorization: Bearer sk_live_yourkey
+
+# As header
+x-api-key: sk_live_yourkey
+```

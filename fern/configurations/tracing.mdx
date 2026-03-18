@@ -1,0 +1,43 @@
+---
+title: "Tracing"
+description: "Call-level observability for Ortavox Agents"
+---
+
+# Tracing
+
+Every call processed by an Ortavox Agent is fully traceable, giving you complete visibility from STT input through LLM reasoning to TTS output.
+
+## Agent Configuration Options
+
+You can configure call behaviour and observability at the Agent level:
+
+```json
+{
+  "max_call_duration": 600,
+  "start_message": "Hello! How can I help you today?",
+  "start_message_mode": "assistant-speaks-first"
+}
+```
+
+| Property | Type | Default | Description |
+|---|---|---|---|
+| `max_call_duration` | `number` | `600` | Maximum call length in seconds |
+| `start_message` | `string` | — | First message the agent says when the call connects |
+| `start_message_mode` | `string` | — | Controls whether the agent or user speaks first |
+
+## Call Metadata
+
+Every completed call records structured metadata available via the `GET /v1/calls/{callId}` endpoint:
+
+| Field | Description |
+|---|---|
+| `status` | Final call status (`completed`, `failed`, `missed`) |
+| `duration` | Total call duration in seconds |
+| `startedAt` | ISO 8601 timestamp of call start |
+| `endedAt` | ISO 8601 timestamp of call end |
+| `transcript` | Full text transcript of the conversation |
+| `recordingUrl` | URL to the call recording (if enabled) |
+
+## Viewing Traces
+
+Navigate to **Dashboard → Calls** and select any call to view the full conversation transcript and timeline.

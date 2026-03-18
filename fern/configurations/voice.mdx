@@ -1,0 +1,37 @@
+---
+title: "Voice"
+description: "Configure the Text-to-Speech engine for your Ortavox Agent"
+---
+
+# Voice
+
+The `voice` object defines how your Agent speaks. It is a **required** field when creating an Agent.
+
+## Schema
+
+```json
+{
+  "voice": {
+    "provider": "elevenlabs",
+    "voice_id": "dqzVFKHwZvR9YMQoFM67",
+    "model": "eleven_turbo_v2_5"
+  }
+}
+```
+
+## Parameters
+
+| Property | Type | Required | Description |
+|---|---|---|---|
+| `provider` | `string` | ✅ | TTS provider (see supported providers below) |
+| `voice_id` | `string` | ✅ | Provider-specific voice identifier |
+| `model` | `string` | ✅ | Provider-specific model name |
+
+## Supported Providers
+
+| Provider | `provider` value | Notes |
+|---|---|---|
+| ElevenLabs | `elevenlabs` | Recommended — highest expressiveness |
+| OpenAI | `openai` | Fast and reliable (Alloy, Nova, Shimmer, etc.) |
+| Google | `google` | Multi-language support |
+| Cartesia | `cartesia` | Ultra-low latency |

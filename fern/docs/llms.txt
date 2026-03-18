@@ -1,0 +1,43 @@
+# OrtaVox Documentation — Machine-Readable Index
+# https://docs.ortavox.ai/llms.txt
+
+## Getting Started
+https://docs.ortavox.ai/docs/introduction
+https://docs.ortavox.ai/docs/quickstart-dashboard
+https://docs.ortavox.ai/docs/quickstart-api
+https://docs.ortavox.ai/docs/core-concepts
+https://docs.ortavox.ai/docs/authentication
+https://docs.ortavox.ai/docs/sdks
+
+## Build — Agents
+https://docs.ortavox.ai/docs/agents
+https://docs.ortavox.ai/docs/dynamic-variables
+https://docs.ortavox.ai/docs/function-calling
+https://docs.ortavox.ai/docs/knowledge-base
+
+## Build — Voice Pipeline
+https://docs.ortavox.ai/docs/providers
+https://docs.ortavox.ai/docs/voice-settings
+
+## Deploy
+https://docs.ortavox.ai/docs/web-calls
+https://docs.ortavox.ai/docs/phone-calls
+https://docs.ortavox.ai/docs/inbound-calls
+https://docs.ortavox.ai/docs/outbound-calls
+https://docs.ortavox.ai/docs/campaigns
+https://docs.ortavox.ai/docs/compliance
+
+## Monitor
+https://docs.ortavox.ai/docs/analytics
+https://docs.ortavox.ai/docs/webhooks
+https://docs.ortavox.ai/docs/post-call-analysis
+
+## Reliability
+https://docs.ortavox.ai/docs/latency
+https://docs.ortavox.ai/docs/debugging
+
+## Pricing
+https://docs.ortavox.ai/docs/pricing
+
+## API Reference
+https://docs.ortavox.ai/api

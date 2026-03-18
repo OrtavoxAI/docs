@@ -1,0 +1,45 @@
+DEBUG 2026-03-13T05:29:03.135Z Running fern (fern-api@2.6.0)
+DEBUG 2026-03-13T05:29:04.210Z [api]: No AI examples override file found at /Users/nawfal/Desktop/CallSync/ortavox_api/ai_examples_override.yml
+DEBUG 2026-03-13T05:29:04.258Z [api]: Skipping top level servers http://localhost:3000 because x-fern-server-name was not provided.
+INFO  2026-03-13T05:29:05.977Z [api]: ✓ All checks passed
+INFO  2026-03-13T05:29:05.980Z [api]: fernapi/fern-typescript-sdk Started.
+INFO  2026-03-13T05:29:05.981Z [api]: fernapi/fern-python-sdk Started.
+DEBUG 2026-03-13T05:29:06.027Z [api]: No AI examples override file found at /Users/nawfal/Desktop/CallSync/ortavox_api/ai_examples_override.yml
+DEBUG 2026-03-13T05:29:06.048Z [api]: Skipping top level servers http://localhost:3000 because x-fern-server-name was not provided.
+DEBUG 2026-03-13T05:29:06.119Z [api]: No AI examples override file found at /Users/nawfal/Desktop/CallSync/ortavox_api/ai_examples_override.yml
+DEBUG 2026-03-13T05:29:06.134Z [api]: Skipping top level servers http://localhost:3000 because x-fern-server-name was not provided.
+DEBUG 2026-03-13T05:29:06.985Z [api]: fernapi/fern-typescript-sdk Uploading source files ...
+DEBUG 2026-03-13T05:29:07.370Z [api]: fernapi/fern-python-sdk Uploading source files ...
+DEBUG 2026-03-13T05:29:07.882Z [api]: fernapi/fern-typescript-sdk Setting IR source configuration ...
+DEBUG 2026-03-13T05:29:08.282Z [api]: fernapi/fern-python-sdk Setting IR source configuration ...
+DEBUG 2026-03-13T05:29:08.847Z [api]: fernapi/fern-typescript-sdk Failed to create job: {"content":{"reason":"status-code","statusCode":400,"body":{"error":"GithubAppNotInstalled","errorInstanceId":"fa2b3d19-d639-42f6-997f-77ddf1092f62","content":{"message":"The Fern GitHub App is not installed on OrtaVoxAI/ortavox-typescript-sdk. Please install the Fern GitHub App (https://github.com/apps/fern-api) on OrtaVoxAI/ortavox-typescript-sdk to continue.","repositoryName":"OrtaVoxAI/ortavox-typescript-sdk"}}}}
+ERROR 2026-03-13T05:29:08.847Z [api]: fernapi/fern-typescript-sdk Failed to create job. Please try again or contact support@buildwithfern.com for assistance.
+DEBUG 2026-03-13T05:29:08.847Z [api]: fernapi/fern-typescript-sdk Error
+                                                                      at $Qo (/Users/nawfal/.npm/_npx/5cd7f63551a53e8c/node_modules/fern-api/cli.cjs:1383:235)
+                                                                      at Loc.failWithoutThrowing (/Users/nawfal/.npm/_npx/5cd7f63551a53e8c/node_modules/fern-api/cli.cjs:1383:1134)
+                                                                      at Loc.failAndThrow (/Users/nawfal/.npm/_npx/5cd7f63551a53e8c/node_modules/fern-api/cli.cjs:1383:1063)
+                                                                      at Object._other (/Users/nawfal/.npm/_npx/5cd7f63551a53e8c/node_modules/fern-api/cli.cjs:2000:297)
+                                                                      at Object._visit (/Users/nawfal/.npm/_npx/5cd7f63551a53e8c/node_modules/fern-api/cli.cjs:62:66439)
+                                                                      at Object._visit (/Users/nawfal/.npm/_npx/5cd7f63551a53e8c/node_modules/fern-api/cli.cjs:62:65778)
+                                                                      at LA8 (/Users/nawfal/.npm/_npx/5cd7f63551a53e8c/node_modules/fern-api/cli.cjs:1998:11736)
+                                                                      at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+                                                                      at async UUj (/Users/nawfal/.npm/_npx/5cd7f63551a53e8c/node_modules/fern-api/cli.cjs:1998:10867)
+                                                                      at async XUj (/Users/nawfal/.npm/_npx/5cd7f63551a53e8c/node_modules/fern-api/cli.cjs:2001:5883)
+ERROR 2026-03-13T05:29:08.847Z [api]: fernapi/fern-typescript-sdk Failed.
+ERROR 2026-03-13T05:29:08.847Z [api]: fernapi/fern-typescript-sdk Failed.
+DEBUG 2026-03-13T05:29:09.162Z [api]: fernapi/fern-python-sdk Failed to create job: {"content":{"reason":"status-code","statusCode":400,"body":{"error":"GithubAppNotInstalled","errorInstanceId":"2a3eb986-04d0-41ca-956a-86e6bde0beb8","content":{"message":"The Fern GitHub App is not installed on OrtaVoxAI/ortavox-python-sdk. Please install the Fern GitHub App (https://github.com/apps/fern-api) on OrtaVoxAI/ortavox-python-sdk to continue.","repositoryName":"OrtaVoxAI/ortavox-python-sdk"}}}}
+ERROR 2026-03-13T05:29:09.162Z [api]: fernapi/fern-python-sdk Failed to create job. Please try again or contact support@buildwithfern.com for assistance.
+DEBUG 2026-03-13T05:29:09.162Z [api]: fernapi/fern-python-sdk Error
+                                                                  at $Qo (/Users/nawfal/.npm/_npx/5cd7f63551a53e8c/node_modules/fern-api/cli.cjs:1383:235)
+                                                                  at Loc.failWithoutThrowing (/Users/nawfal/.npm/_npx/5cd7f63551a53e8c/node_modules/fern-api/cli.cjs:1383:1134)
+                                                                  at Loc.failAndThrow (/Users/nawfal/.npm/_npx/5cd7f63551a53e8c/node_modules/fern-api/cli.cjs:1383:1063)
+                                                                  at Object._other (/Users/nawfal/.npm/_npx/5cd7f63551a53e8c/node_modules/fern-api/cli.cjs:2000:297)
+                                                                  at Object._visit (/Users/nawfal/.npm/_npx/5cd7f63551a53e8c/node_modules/fern-api/cli.cjs:62:66439)
+                                                                  at Object._visit (/Users/nawfal/.npm/_npx/5cd7f63551a53e8c/node_modules/fern-api/cli.cjs:62:65778)
+                                                                  at LA8 (/Users/nawfal/.npm/_npx/5cd7f63551a53e8c/node_modules/fern-api/cli.cjs:1998:11736)
+                                                                  at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+                                                                  at async UUj (/Users/nawfal/.npm/_npx/5cd7f63551a53e8c/node_modules/fern-api/cli.cjs:1998:10867)
+                                                                  at async XUj (/Users/nawfal/.npm/_npx/5cd7f63551a53e8c/node_modules/fern-api/cli.cjs:2001:5883)
+ERROR 2026-03-13T05:29:09.162Z [api]: fernapi/fern-python-sdk Failed.
+ERROR 2026-03-13T05:29:09.163Z [api]: fernapi/fern-python-sdk Failed.
+DEBUG 2026-03-13T05:29:09.165Z Checking if fern-api upgrade is available...

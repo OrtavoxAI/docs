@@ -1,0 +1,91 @@
+# Fern OpenAPI overrides
+# Use this file to customize how the OpenAPI spec is interpreted by Fern.
+# See: https://buildwithfern.com/docs/api-definition/openapi/overrides
+#
+# Examples:
+#   - Rename request body types:
+#     paths:
+#       /v1/agents:
+#         post:
+#           requestBody:
+#             content:
+#               application/json:
+#                 schema:
+#                   x-fern-type-name: CreateAgentBody
+#
+#   - Add SDK method names:
+#     paths:
+#       /v1/calls/web-call:
+#         post:
+#           x-fern-sdk-method-name: initiateWebCall
+#           x-fern-sdk-group-name: calls
+
+paths:
+  /v1/calls/web-call:
+    post:
+      x-fern-sdk-method-name: initiateWebCall
+      x-fern-sdk-group-name: calls
+  /v1/calls/phone-call:
+    post:
+      x-fern-sdk-method-name: initiatePhoneCall
+      x-fern-sdk-group-name: calls
+  /v1/calls:
+    get:
+      x-fern-sdk-method-name: list
+      x-fern-sdk-group-name: calls
+  /v1/calls/{callId}:
+    get:
+      x-fern-sdk-method-name: get
+      x-fern-sdk-group-name: calls
+  /v1/agents:
+    get:
+      x-fern-sdk-method-name: list
+      x-fern-sdk-group-name: agents
+    post:
+      x-fern-sdk-method-name: create
+      x-fern-sdk-group-name: agents
+  /v1/agents/{agentId}:
+    get:
+      x-fern-sdk-method-name: get
+      x-fern-sdk-group-name: agents
+    patch:
+      x-fern-sdk-method-name: update
+      x-fern-sdk-group-name: agents
+    delete:
+      x-fern-sdk-method-name: delete
+      x-fern-sdk-group-name: agents
+  /v1/telephony/import:
+    post:
+      x-fern-sdk-method-name: importNumber
+      x-fern-sdk-group-name: telephony
+  /v1/telephony/numbers:
+    get:
+      x-fern-sdk-method-name: listNumbers
+      x-fern-sdk-group-name: telephony
+  /v1/telephony/numbers/{phoneNumber}:
+    get:
+      x-fern-sdk-method-name: getNumber
+      x-fern-sdk-group-name: telephony
+    patch:
+      x-fern-sdk-method-name: updateNumber
+      x-fern-sdk-group-name: telephony
+    delete:
+      x-fern-sdk-method-name: deleteNumber
+      x-fern-sdk-group-name: telephony
+  /v1/tools:
+    get:
+      x-fern-sdk-method-name: list
+      x-fern-sdk-group-name: tools
+    post:
+      x-fern-sdk-method-name: create
+      x-fern-sdk-group-name: tools
+  /v1/tools/{id}:
+    get:
+      x-fern-sdk-method-name: get
+      x-fern-sdk-group-name: tools
+    put:
+      x-fern-sdk-method-name: update
+      x-fern-sdk-group-name: tools
+    delete:
+      x-fern-sdk-method-name: delete
+      x-fern-sdk-group-name: tools

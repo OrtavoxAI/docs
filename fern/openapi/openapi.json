@@ -1,0 +1,1729 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "OrtaVox API",
+    "version": "1.0.0",
+    "description": "Voice AI platform API for managing agents and calls",
+    "contact": {
+      "name": "API Support",
+      "email": "support@ortavox.com"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://api.ortavox.ai",
+      "description": "Production server"
+    },
+    {
+      "url": "http://localhost:3000",
+      "description": "Local development server"
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "BearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT or API Key",
+        "description": "Clerk JWT token or OrtaVox API key (sk_live_... or pk_live_...)"
+      },
+      "ApiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "x-api-key",
+        "description": "OrtaVox API key (alternative to Bearer token)"
+      }
+    },
+    "schemas": {
+      "CreateAgent": {
+        "type": "object",
+        "required": [
+          "name",
+          "transcriber",
+          "model",
+          "voice"
+        ],
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Agent name",
+            "example": "Support Agent"
+          },
+          "transcriber": {
+            "type": "object",
+            "required": [
+              "provider",
+              "model",
+              "language"
+            ],
+            "properties": {
+              "provider": {
+                "type": "string",
+                "enum": [
+                  "deepgram",
+                  "openai",
+                  "assemblyai",
+                  "google",
+                  "speechmatics",
+                  "azure"
+                ],
+                "example": "deepgram"
+              },
+              "model": {
+                "type": "string",
+                "example": "nova-3"
+              },
+              "language": {
+                "type": "string",
+                "default": "en",
+                "example": "en"
+              }
+            }
+          },
+          "model": {
+            "type": "object",
+            "required": [
+              "provider",
+              "model",
+              "system_prompt",
+              "temperature",
+              "max_tokens"
+            ],
+            "properties": {
+              "provider": {
+                "type": "string",
+                "enum": [
+                  "openai",
+                  "anthropic",
+                  "google",
+                  "groq",
+                  "deep-seek"
+                ],
+                "example": "openai"
+              },
+              "model": {
+                "type": "string",
+                "example": "gpt-4o-mini"
+              },
+              "system_prompt": {
+                "type": "string",
+                "example": "You are a helpful AI assistant"
+              },
+              "temperature": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 2,
+                "default": 0.8
+              },
+              "max_tokens": {
+                "type": "number",
+                "default": 3500
+              },
+              "tools": {
+                "type": "array",
+                "items": {},
+                "default": []
+              }
+            }
+          },
+          "voice": {
+            "type": "object",
+            "required": [
+              "provider",
+              "voice_id",
+              "model"
+            ],
+            "properties": {
+              "provider": {
+                "type": "string",
+                "enum": [
+                  "elevenlabs",
+                  "openai",
+                  "google",
+                  "cartesia"
+                ],
+                "example": "elevenlabs"
+              },
+              "voice_id": {
+                "type": "string",
+                "example": "dqzVFKHwZvR9YMQoFM67"
+              },
+              "model": {
+                "type": "string",
+                "example": "eleven_turbo_v2_5"
+              }
+            }
+          },
+          "max_call_duration": {
+            "type": "number",
+            "default": 600,
+            "example": 600
+          }
+        }
+      },
+      "AgentResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              },
+              "organizationId": {
+                "type": "string"
+              },
+              "configuration": {
+                "type": "object",
+                "properties": {
+                  "model": {
+                    "type": "object"
+                  },
+                  "voice": {
+                    "type": "object"
+                  },
+                  "transcriber": {
+                    "type": "object"
+                  },
+                  "start_message": {
+                    "type": "string"
+                  },
+                  "start_message_mode": {
+                    "type": "string"
+                  },
+                  "max_call_duration": {
+                    "type": "number"
+                  }
+                }
+              },
+              "createdAt": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "updatedAt": {
+                "type": "string",
+                "format": "date-time"
+              }
+            }
+          },
+          "error": {
+            "type": "null"
+          },
+          "meta": {
+            "type": "object",
+            "properties": {
+              "timestamp": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      },
+      "CreateApiKey": {
+        "type": "object",
+        "required": [
+          "name"
+        ],
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "API key name",
+            "example": "Production API Key"
+          },
+          "tag": {
+            "type": "string",
+            "enum": [
+              "private",
+              "public"
+            ],
+            "default": "private",
+            "description": "Key type: private (sk_live_) or public (pk_live_)"
+          },
+          "restrictions": {
+            "type": "object",
+            "properties": {
+              "allowedAgentsIds": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "description": "List of agent IDs this key can access"
+              },
+              "allowedOrigins": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "description": "List of allowed origins (for public keys)"
+              }
+            }
+          },
+          "permissions": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "default": [
+              "read:agents",
+              "create:calls"
+            ]
+          },
+          "expiresAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Optional expiration date"
+          }
+        }
+      },
+      "ApiKeyResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              },
+              "key": {
+                "type": "string",
+                "description": "Full key (only shown once on creation)"
+              },
+              "tag": {
+                "type": "string",
+                "enum": [
+                  "private",
+                  "public"
+                ]
+              },
+              "restrictions": {
+                "type": "object"
+              },
+              "permissions": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "createdAt": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "updatedAt": {
+                "type": "string",
+                "format": "date-time"
+              }
+            }
+          }
+        }
+      },
+      "ImportPhoneNumber": {
+        "type": "object",
+        "required": [
+          "phone_number",
+          "termination_uri"
+        ],
+        "properties": {
+          "phone_number": {
+            "type": "string",
+            "description": "Phone number in E.164 format",
+            "example": "+14157774444",
+            "pattern": "^\\+[1-9]\\d{1,14}$"
+          },
+          "termination_uri": {
+            "type": "string",
+            "description": "SIP trunk termination URI",
+            "example": "sip.uk.didlogic.net"
+          },
+          "sip_trunk_auth_username": {
+            "type": "string",
+            "description": "SIP trunk authentication username"
+          },
+          "sip_trunk_auth_password": {
+            "type": "string",
+            "description": "SIP trunk authentication password"
+          },
+          "inbound_agent_id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Agent ID for inbound calls"
+          },
+          "outbound_agent_id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Agent ID for outbound calls"
+          },
+          "inbound_agent_version": {
+            "type": "integer",
+            "description": "Inbound agent version"
+          },
+          "outbound_agent_version": {
+            "type": "integer",
+            "description": "Outbound agent version"
+          },
+          "nickname": {
+            "type": "string",
+            "description": "Friendly name for the phone number",
+            "example": "Main Support Line"
+          },
+          "inbound_webhook_url": {
+            "type": "string",
+            "format": "uri",
+            "description": "Webhook URL for inbound call events"
+          }
+        }
+      },
+      "PhoneNumberResponse": {
+        "type": "object",
+        "properties": {
+          "phone_number": {
+            "type": "string",
+            "example": "+14157774444"
+          },
+          "phone_number_type": {
+            "type": "string",
+            "example": "custom"
+          },
+          "phone_number_pretty": {
+            "type": "string",
+            "example": "+1 (415) 777-4444"
+          },
+          "inbound_agent_id": {
+            "type": "string",
+            "nullable": true
+          },
+          "outbound_agent_id": {
+            "type": "string",
+            "nullable": true
+          },
+          "inbound_agent_version": {
+            "type": "integer",
+            "nullable": true
+          },
+          "outbound_agent_version": {
+            "type": "integer",
+            "nullable": true
+          },
+          "area_code": {
+            "type": "integer",
+            "nullable": true
+          },
+          "nickname": {
+            "type": "string",
+            "nullable": true
+          },
+          "inbound_webhook_url": {
+            "type": "string",
+            "nullable": true
+          },
+          "last_modification_timestamp": {
+            "type": "integer"
+          }
+        }
+      },
+      "CreateTool": {
+        "type": "object",
+        "required": [
+          "name",
+          "type"
+        ],
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Tool name",
+            "example": "API request"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "end_call",
+              "api"
+            ],
+            "description": "Tool type",
+            "example": "api"
+          },
+          "description": {
+            "type": "string",
+            "description": "Tool description (optional, auto-generated if not provided)",
+            "example": "API request"
+          },
+          "url": {
+            "type": "string",
+            "description": "API endpoint URL (required for api type)",
+            "example": "https://api.open-meteo.com/v1/forecast"
+          },
+          "method": {
+            "type": "string",
+            "enum": [
+              "GET",
+              "POST",
+              "PUT",
+              "DELETE",
+              "PATCH"
+            ],
+            "description": "HTTP method (required for api type)",
+            "example": "GET"
+          },
+          "headers": {
+            "type": "object",
+            "description": "HTTP headers for api type",
+            "example": {
+              "x-api-key": "your-api-key"
+            }
+          },
+          "parameters": {
+            "type": "object",
+            "description": "JSON Schema for tool parameters",
+            "properties": {
+              "type": {
+                "type": "string",
+                "example": "object"
+              },
+              "properties": {
+                "type": "object",
+                "example": {
+                  "latitude": {
+                    "type": "number",
+                    "description": "Latitude of the location"
+                  },
+                  "longitude": {
+                    "type": "number",
+                    "description": "Longitude of the location"
+                  }
+                }
+              },
+              "required": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "example": [
+                  "latitude",
+                  "longitude"
+                ]
+              }
+            }
+          }
+        }
+      },
+      "UpdateTool": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "goodbye_message": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string"
+          },
+          "method": {
+            "type": "string",
+            "enum": [
+              "GET",
+              "POST",
+              "PUT",
+              "DELETE",
+              "PATCH"
+            ]
+          },
+          "headers": {
+            "type": "object"
+          },
+          "parameters": {
+            "type": "object"
+          }
+        }
+      },
+      "ToolResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "type": {
+                "type": "string",
+                "enum": [
+                  "end_call",
+                  "api"
+                ]
+              },
+              "createdAt": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "updatedAt": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "tool": {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "enum": [
+                      "end_call",
+                      "api"
+                    ]
+                  },
+                  "name": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "parameters": {
+                    "type": "object",
+                    "nullable": true
+                  },
+                  "url": {
+                    "type": "string",
+                    "nullable": true
+                  },
+                  "method": {
+                    "type": "string",
+                    "nullable": true
+                  },
+                  "headers": {
+                    "type": "object",
+                    "nullable": true
+                  },
+                  "goodbye_message": {
+                    "type": "string",
+                    "nullable": true
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "AssignTools": {
+        "type": "object",
+        "required": [
+          "toolIds"
+        ],
+        "properties": {
+          "toolIds": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "Array of tool IDs to assign to the agent",
+            "example": [
+              "123e4567-e89b-12d3-a456-426614174000",
+              "123e4567-e89b-12d3-a456-426614174001"
+            ]
+          }
+        }
+      },
+      "ValidationError": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "error": {
+            "type": "string",
+            "example": "Bad Request"
+          },
+          "statusCode": {
+            "type": "number",
+            "example": 400
+          }
+        }
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "Agents",
+      "description": "Agent management endpoints"
+    },
+    {
+      "name": "API Keys",
+      "description": "API key management endpoints"
+    },
+    {
+      "name": "Calls",
+      "description": "Call management endpoints"
+    },
+    {
+      "name": "Telephony",
+      "description": "Phone number and SIP trunk management"
+    },
+    {
+      "name": "Tools",
+      "description": "Tool management endpoints - Create and manage function tools for agents"
+    }
+  ],
+  "paths": {
+    "/v1/agents": {
+      "post": {
+        "tags": [
+          "Agents"
+        ],
+        "summary": "Create a new agent",
+        "description": "Create a new AI agent with specified configuration. Requires authentication via Clerk JWT or API key.",
+        "security": [
+          {
+            "BearerAuth": []
+          },
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateAgent"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Agent created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AgentResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationError"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - Invalid or missing authentication"
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Agents"
+        ],
+        "summary": "List all active agents",
+        "description": "Retrieve a paginated list of all AI voice agents configured for the authenticated organization.",
+        "security": [
+          {
+            "BearerAuth": []
+          },
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "type": "integer",
+              "default": 50
+            },
+            "description": "Maximum number of agents to return per page."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A collection of agents retrieved successfully."
+          }
+        }
+      }
+    },
+    "/v1/agents/{agentId}": {
+      "get": {
+        "tags": [
+          "Agents"
+        ],
+        "summary": "Get agent by ID",
+        "description": "Retrieve a specific agent",
+        "security": [
+          {
+            "BearerAuth": []
+          },
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "agentId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Agent ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Agent retrieved successfully"
+          },
+          "404": {
+            "description": "Agent not found"
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "Agents"
+        ],
+        "summary": "Update agent (partial)",
+        "description": "Partially update agent configuration. Only provided fields will be updated.",
+        "security": [
+          {
+            "BearerAuth": []
+          },
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "agentId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Agent ID"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateAgent"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Agent updated successfully"
+          },
+          "401": {
+            "description": "Unauthorized - Invalid or missing authentication"
+          },
+          "404": {
+            "description": "Agent not found"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Agents"
+        ],
+        "summary": "Delete agent",
+        "description": "Delete an agent by ID",
+        "security": [
+          {
+            "BearerAuth": []
+          },
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "agentId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Agent deleted successfully"
+          }
+        }
+      }
+    },
+    "/v1/calls/web-call": {
+      "post": {
+        "tags": [
+          "Calls"
+        ],
+        "summary": "Initiate a web call",
+        "description": "Start a web-based voice call with an AI agent",
+        "security": [
+          {
+            "BearerAuth": []
+          },
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "agent_id"
+                ],
+                "properties": {
+                  "agent_id": {
+                    "type": "string",
+                    "format": "uuid",
+                    "description": "UUID of the agent to use for the call"
+                  },
+                  "metadata": {
+                    "type": "object",
+                    "description": "Optional metadata for the call",
+                    "properties": {
+                      "assistantName": {
+                        "type": "string",
+                        "description": "Custom name for the assistant"
+                      },
+                      "systemPrompt": {
+                        "type": "string",
+                        "description": "Custom system prompt"
+                      },
+                      "startMessage": {
+                        "type": "string",
+                        "description": "Initial message from the agent"
+                      },
+                      "backgroundSound": {
+                        "type": "string",
+                        "description": "Background sound URL"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Web call initiated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "callId": {
+                          "type": "string"
+                        },
+                        "roomName": {
+                          "type": "string"
+                        },
+                        "token": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - Invalid or missing authentication"
+          },
+          "404": {
+            "description": "Agent not found"
+          }
+        }
+      }
+    },
+    "/v1/calls/phone-call": {
+      "post": {
+        "tags": [
+          "Calls"
+        ],
+        "summary": "Initiate a phone call",
+        "description": "Start an outbound phone call with an AI agent",
+        "security": [
+          {
+            "BearerAuth": []
+          },
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "from_number",
+                  "to_number",
+                  "agent_id"
+                ],
+                "properties": {
+                  "from_number": {
+                    "type": "string",
+                    "description": "Phone number to call from (E.164 format) - must be a registered phone number",
+                    "example": "+448450950002",
+                    "pattern": "^\\+[1-9]\\d{1,14}$"
+                  },
+                  "to_number": {
+                    "type": "string",
+                    "description": "Phone number to call to (E.164 format)",
+                    "example": "+14157774444",
+                    "pattern": "^\\+[1-9]\\d{1,14}$"
+                  },
+                  "agent_id": {
+                    "type": "string",
+                    "format": "uuid",
+                    "description": "ID of the agent to use for the call",
+                    "example": "123e4567-e89b-12d3-a456-426614174000"
+                  },
+                  "dynamic_variables": {
+                    "type": "object",
+                    "description": "Optional dynamic variables to pass to the agent (key-value pairs)",
+                    "additionalProperties": true,
+                    "example": {
+                      "customer_name": "John Doe",
+                      "order_id": "ORD-12345",
+                      "account_balance": 1500.5
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Phone call initiated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "callId": {
+                          "type": "string"
+                        },
+                        "roomName": {
+                          "type": "string"
+                        },
+                        "conversationId": {
+                          "type": "string"
+                        },
+                        "status": {
+                          "type": "string",
+                          "enum": [
+                            "initiated",
+                            "connecting",
+                            "active",
+                            "completed",
+                            "failed"
+                          ]
+                        },
+                        "livekitUrl": {
+                          "type": "string"
+                        },
+                        "createdAt": {
+                          "type": "string",
+                          "format": "date-time"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Outbound trunk not configured for the phone number"
+          },
+          "401": {
+            "description": "Unauthorized - Invalid or missing authentication"
+          },
+          "404": {
+            "description": "Agent or phone number not found"
+          }
+        }
+      }
+    },
+    "/v1/calls": {
+      "get": {
+        "tags": [
+          "Calls"
+        ],
+        "summary": "List all calls",
+        "description": "Get all calls for the authenticated user",
+        "security": [
+          {
+            "BearerAuth": []
+          },
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "status",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "queued",
+                "ringing",
+                "in-progress",
+                "completed",
+                "failed",
+                "busy",
+                "no-answer"
+              ]
+            },
+            "description": "Filter calls by their specific lifecycle status. Useful for polling active calls."
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "type": "integer",
+              "default": 50,
+              "maximum": 100
+            },
+            "description": "Maximum number of calls to return for pagination purposes."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A paginated list of calls matching the criteria retrieved successfully."
+          },
+          "401": {
+            "description": "Unauthorized - Invalid or missing authentication."
+          }
+        }
+      }
+    },
+    "/v1/calls/{callId}": {
+      "get": {
+        "tags": [
+          "Calls"
+        ],
+        "summary": "Get call details",
+        "description": "Retrieve detailed information about a specific call",
+        "security": [
+          {
+            "BearerAuth": []
+          },
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "callId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Call ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Call details retrieved successfully"
+          },
+          "401": {
+            "description": "Unauthorized - Invalid or missing authentication"
+          },
+          "404": {
+            "description": "Call not found"
+          }
+        }
+      }
+    },
+    "/v1/telephony/import": {
+      "post": {
+        "tags": [
+          "Telephony"
+        ],
+        "summary": "Import phone number",
+        "description": "Import a phone number from custom telephony and bind agents",
+        "security": [
+          {
+            "BearerAuth": []
+          },
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "phone_number",
+                  "termination_uri"
+                ],
+                "properties": {
+                  "phone_number": {
+                    "type": "string",
+                    "description": "E.164 format phone number",
+                    "example": "+14157774444"
+                  },
+                  "termination_uri": {
+                    "type": "string",
+                    "description": "SIP trunk termination URI",
+                    "example": "sip.uk.didlogic.net"
+                  },
+                  "direction": {
+                    "type": "string",
+                    "enum": [
+                      "inbound",
+                      "outbound",
+                      "both"
+                    ],
+                    "description": "Which direction(s) to configure - inbound only, outbound only, or both. Defaults to both if not specified.",
+                    "example": "both"
+                  },
+                  "sip_auth_username": {
+                    "type": "string",
+                    "description": "SIP authentication username (required)",
+                    "example": "93329"
+                  },
+                  "sip_auth_password": {
+                    "type": "string",
+                    "description": "SIP authentication password (required)",
+                    "example": "@@DidlogicSip00@@"
+                  },
+                  "inbound_agent_id": {
+                    "type": "string",
+                    "format": "uuid",
+                    "description": "Agent ID for inbound calls"
+                  },
+                  "outbound_agent_id": {
+                    "type": "string",
+                    "format": "uuid",
+                    "description": "Agent ID for outbound calls"
+                  },
+                  "inbound_agent_version": {
+                    "type": "integer",
+                    "description": "Inbound agent version"
+                  },
+                  "outbound_agent_version": {
+                    "type": "integer",
+                    "description": "Outbound agent version"
+                  },
+                  "nickname": {
+                    "type": "string",
+                    "description": "Friendly name for the phone number",
+                    "example": "Main Support Line"
+                  },
+                  "inbound_webhook_url": {
+                    "type": "string",
+                    "format": "uri",
+                    "description": "Webhook URL for inbound call events"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Phone number imported successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "phone_number": {
+                          "type": "string"
+                        },
+                        "inbound_sip_trunk_id": {
+                          "type": "string",
+                          "nullable": true
+                        },
+                        "outbound_sip_trunk_id": {
+                          "type": "string",
+                          "nullable": true
+                        },
+                        "auth_state": {
+                          "type": "string",
+                          "enum": [
+                            "authenticated",
+                            "not_authenticated",
+                            "server_error",
+                            "not_verified"
+                          ]
+                        },
+                        "auth_state_message": {
+                          "type": "string",
+                          "nullable": true
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "409": {
+            "description": "Phone number already exists"
+          }
+        }
+      }
+    },
+    "/v1/telephony/numbers": {
+      "get": {
+        "tags": [
+          "Telephony"
+        ],
+        "summary": "List all imported phone numbers",
+        "description": "Retrieve a list of all phone numbers configured for SIP trunking within your organization, including their bound agents and current authentication state.",
+        "security": [
+          {
+            "BearerAuth": []
+          },
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "type": "integer",
+              "default": 50
+            },
+            "description": "Number of phone numbers to return per page."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A collection of phone numbers retrieved successfully."
+          },
+          "401": {
+            "description": "Unauthorized - Invalid or missing authentication."
+          }
+        }
+      }
+    },
+    "/v1/telephony/numbers/{phoneNumber}": {
+      "get": {
+        "tags": [
+          "Telephony"
+        ],
+        "summary": "Get phone number details",
+        "description": "Retrieve details for a specific phone number",
+        "security": [
+          {
+            "BearerAuth": []
+          },
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "phoneNumber",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Phone number in E.164 format",
+            "example": "+14157774444"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Phone number details retrieved successfully"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Phone number not found"
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "Telephony"
+        ],
+        "summary": "Update phone number",
+        "description": "Update agent bindings and configuration for a phone number",
+        "security": [
+          {
+            "BearerAuth": []
+          },
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "phoneNumber",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Phone number in E.164 format",
+            "example": "+14157774444"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "inbound_agent_id": {
+                    "type": "string",
+                    "format": "uuid"
+                  },
+                  "outbound_agent_id": {
+                    "type": "string",
+                    "format": "uuid"
+                  },
+                  "inbound_agent_version": {
+                    "type": "integer"
+                  },
+                  "outbound_agent_version": {
+                    "type": "integer"
+                  },
+                  "nickname": {
+                    "type": "string"
+                  },
+                  "inbound_webhook_url": {
+                    "type": "string",
+                    "format": "uri"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Phone number updated successfully"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Phone number or agent not found"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Telephony"
+        ],
+        "summary": "Delete phone number",
+        "description": "Remove a phone number from the system",
+        "security": [
+          {
+            "BearerAuth": []
+          },
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "phoneNumber",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Phone number in E.164 format",
+            "example": "+14157774444"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Phone number deleted successfully"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Phone number not found"
+          }
+        }
+      }
+    },
+    "/v1/tools": {
+      "post": {
+        "summary": "Create a new tool",
+        "description": "Create an end_call or API tool for agents to use",
+        "tags": [
+          "Tools"
+        ],
+        "security": [
+          {
+            "BearerAuth": []
+          },
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateTool"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Tool created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ToolResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation error"
+          }
+        }
+      },
+      "get": {
+        "summary": "Get all tools for organization",
+        "description": "List all tools (end_call and api) for the organization",
+        "tags": [
+          "Tools"
+        ],
+        "security": [
+          {
+            "BearerAuth": []
+          },
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "type",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "end_call",
+                "api"
+              ]
+            },
+            "description": "Filter by tool type"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of tools",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/ToolResponse"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/tools/{id}": {
+      "get": {
+        "summary": "Get a specific tool",
+        "description": "Get details of a specific tool by ID",
+        "tags": [
+          "Tools"
+        ],
+        "security": [
+          {
+            "BearerAuth": []
+          },
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "Tool ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Tool details",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ToolResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Tool not found"
+          }
+        }
+      },
+      "put": {
+        "summary": "Update a tool",
+        "description": "Update a custom tool (cannot update default tools)",
+        "tags": [
+          "Tools"
+        ],
+        "security": [
+          {
+            "BearerAuth": []
+          },
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "Tool ID"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateTool"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Tool updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ToolResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Cannot update default tools"
+          },
+          "404": {
+            "description": "Tool not found"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete a tool",
+        "description": "Delete a custom tool (cannot delete default tools)",
+        "tags": [
+          "Tools"
+        ],
+        "security": [
+          {
+            "BearerAuth": []
+          },
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "Tool ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Tool deleted successfully"
+          },
+          "400": {
+            "description": "Cannot delete default tools"
+          },
+          "404": {
+            "description": "Tool not found"
+          }
+        }
+      }
+    }
+  }
+}

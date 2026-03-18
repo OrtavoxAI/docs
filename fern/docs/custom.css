@@ -1,0 +1,394 @@
+/* ============================================================
+   OrtaVox Docs — Custom Fern Styling
+   Matches landing page: true black, #3b82f6 primary, JetBrains Mono
+   ============================================================ */
+
+/* ── Color tokens ──────────────────────────────────────────── */
+:root {
+  --grayscale-1:  #000000 !important;
+  --grayscale-2:  #090909 !important;
+  --grayscale-3:  #111113 !important;
+  --grayscale-4:  #1c1c1f !important;
+  --grayscale-5:  #2a2a2f !important;
+  --grayscale-6:  #3f3f46 !important;
+  --grayscale-7:  #52525b !important;
+  --grayscale-8:  #71717a !important;
+  --grayscale-9:  #a1a1aa !important;
+  --grayscale-10: #d4d4d8 !important;
+  --grayscale-11: #f4f4f5 !important;
+  --grayscale-12: #fafafa !important;
+
+  --accent:       #3b82f6 !important;
+  --accent-hover: #60a5fa !important;
+  --accent-muted: rgba(59,130,246,0.12) !important;
+
+  --border-color: rgba(255,255,255,0.07) !important;
+}
+
+/* ── True black base ───────────────────────────────────────── */
+html, html[data-theme="dark"], html.dark,
+body, #root, #__next, [data-theme="dark"] {
+  background-color: #000000 !important;
+  color: #fafafa !important;
+}
+
+/* ── Sidebar ───────────────────────────────────────────────── */
+nav, aside,
+[class*="sidebar"],
+[class*="Sidebar"],
+[class*="navigation"],
+[class*="Navigation"] {
+  background-color: #000000 !important;
+  border-right: 1px solid rgba(255,255,255,0.06) !important;
+}
+
+/* Sidebar section labels */
+[class*="sectionTitle"],
+[class*="section-title"],
+[class*="groupLabel"] {
+  font-size: 10px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.1em !important;
+  text-transform: uppercase !important;
+  color: rgba(255,255,255,0.25) !important;
+  font-family: 'JetBrains Mono', 'Courier New', monospace !important;
+}
+
+/* Sidebar active link */
+[class*="sidebar"] a[aria-current="page"],
+[class*="sidebar"] a[data-active="true"],
+[class*="navigation"] a[aria-current="page"] {
+  background-color: rgba(59,130,246,0.10) !important;
+  color: #3b82f6 !important;
+  border-radius: 8px !important;
+}
+
+/* Sidebar links */
+[class*="sidebar"] a,
+[class*="navigation"] a {
+  color: rgba(255,255,255,0.55) !important;
+  border-radius: 8px !important;
+  transition: color 0.15s, background 0.15s !important;
+}
+[class*="sidebar"] a:hover,
+[class*="navigation"] a:hover {
+  color: #fafafa !important;
+  background-color: rgba(255,255,255,0.04) !important;
+}
+
+/* ── Top navbar ────────────────────────────────────────────── */
+header, [class*="header"], [class*="Header"],
+[class*="navbar"], [class*="Navbar"] {
+  background-color: rgba(0,0,0,0.85) !important;
+  backdrop-filter: blur(12px) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
+  border-bottom: 1px solid rgba(255,255,255,0.06) !important;
+}
+
+/* Navbar tabs (Guides / API Reference) */
+[role="tablist"] button,
+[class*="tab-trigger"],
+[class*="TabTrigger"] {
+  font-size: 12px !important;
+  font-weight: 500 !important;
+  color: rgba(255,255,255,0.45) !important;
+  border-radius: 8px !important;
+  transition: color 0.15s !important;
+}
+[role="tablist"] button[aria-selected="true"],
+[class*="tab-trigger"][data-state="active"],
+[class*="TabTrigger"][data-state="active"] {
+  color: #fafafa !important;
+  background-color: rgba(255,255,255,0.06) !important;
+}
+
+/* ── Main content area ─────────────────────────────────────── */
+main, [class*="content"], [class*="Content"],
+[class*="article"], [class*="prose"] {
+  background-color: #000000 !important;
+}
+
+/* Page titles */
+h1 {
+  font-size: 2rem !important;
+  font-weight: 600 !important;
+  letter-spacing: -0.025em !important;
+  color: #fafafa !important;
+  line-height: 1.1 !important;
+}
+
+h2 {
+  font-size: 1.375rem !important;
+  font-weight: 600 !important;
+  color: #fafafa !important;
+  border-bottom: 1px solid rgba(255,255,255,0.06) !important;
+  padding-bottom: 0.5rem !important;
+  margin-top: 2.5rem !important;
+}
+
+h3 {
+  font-size: 1.1rem !important;
+  font-weight: 600 !important;
+  color: #e4e4e7 !important;
+}
+
+p, li {
+  color: rgba(255,255,255,0.70) !important;
+  line-height: 1.7 !important;
+}
+
+a {
+  color: #60a5fa !important;
+  text-decoration: none !important;
+}
+a:hover {
+  color: #93c5fd !important;
+  text-decoration: underline !important;
+}
+
+/* ── Code blocks ───────────────────────────────────────────── */
+pre, [class*="codeblock"], [class*="CodeBlock"],
+[class*="code-block"], [class*="pre-wrapper"] {
+  background-color: #0a0a0b !important;
+  border: 1px solid rgba(255,255,255,0.08) !important;
+  border-radius: 12px !important;
+  overflow: hidden !important;
+}
+
+code {
+  font-family: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace !important;
+  font-size: 13px !important;
+}
+
+/* Inline code */
+:not(pre) > code {
+  background-color: rgba(59,130,246,0.10) !important;
+  color: #93c5fd !important;
+  padding: 2px 6px !important;
+  border-radius: 5px !important;
+  font-size: 0.85em !important;
+  border: 1px solid rgba(59,130,246,0.20) !important;
+}
+
+/* Code tab bar */
+[class*="codegroup-header"],
+[class*="code-tab"],
+[class*="CodeTab"],
+[class*="language-tab"] {
+  background-color: #0d0d0f !important;
+  border-bottom: 1px solid rgba(255,255,255,0.06) !important;
+}
+
+/* Active code tab */
+[class*="code-tab"][data-state="active"],
+[class*="CodeTab"][aria-selected="true"] {
+  color: #3b82f6 !important;
+  border-bottom: 2px solid #3b82f6 !important;
+}
+
+/* ── Method badges ─────────────────────────────────────────── */
+[class*="method-badge"],
+[class*="MethodBadge"],
+[class*="http-method"] {
+  font-family: 'JetBrains Mono', monospace !important;
+  font-size: 10px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.05em !important;
+  padding: 2px 7px !important;
+  border-radius: 5px !important;
+}
+
+[class*="GET"],  [data-method="get"]    { background: rgba(34,197,94,0.15)  !important; color: #4ade80 !important; }
+[class*="POST"], [data-method="post"]   { background: rgba(59,130,246,0.15) !important; color: #60a5fa !important; }
+[class*="PUT"],  [data-method="put"]    { background: rgba(251,191,36,0.15) !important; color: #fbbf24 !important; }
+[class*="PATCH"],[data-method="patch"]  { background: rgba(251,146,60,0.15) !important; color: #fb923c !important; }
+[class*="DELETE"],[data-method="delete"]{ background: rgba(239,68,68,0.15)  !important; color: #f87171 !important; }
+
+/* ── Tables ────────────────────────────────────────────────── */
+table {
+  width: 100% !important;
+  border-collapse: collapse !important;
+  border-radius: 10px !important;
+  overflow: hidden !important;
+  border: 1px solid rgba(255,255,255,0.07) !important;
+}
+
+thead tr {
+  background-color: rgba(255,255,255,0.03) !important;
+}
+
+th {
+  font-size: 11px !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.06em !important;
+  text-transform: uppercase !important;
+  color: rgba(255,255,255,0.35) !important;
+  font-family: 'JetBrains Mono', monospace !important;
+  padding: 10px 14px !important;
+  border-bottom: 1px solid rgba(255,255,255,0.07) !important;
+}
+
+td {
+  padding: 10px 14px !important;
+  font-size: 13.5px !important;
+  color: rgba(255,255,255,0.65) !important;
+  border-bottom: 1px solid rgba(255,255,255,0.04) !important;
+}
+
+tr:last-child td { border-bottom: none !important; }
+tr:hover td { background-color: rgba(255,255,255,0.02) !important; }
+
+/* ── Callout boxes ─────────────────────────────────────────── */
+/* Warning */
+[class*="callout"][data-type="warning"],
+[class*="alert"][data-type="warning"],
+[class*="Warning"] {
+  background-color: rgba(251,191,36,0.06) !important;
+  border-left: 3px solid #fbbf24 !important;
+  border-radius: 0 8px 8px 0 !important;
+}
+
+/* Info */
+[class*="callout"][data-type="info"],
+[class*="alert"][data-type="info"],
+[class*="Info"] {
+  background-color: rgba(59,130,246,0.06) !important;
+  border-left: 3px solid #3b82f6 !important;
+  border-radius: 0 8px 8px 0 !important;
+}
+
+/* Tip */
+[class*="callout"][data-type="tip"],
+[class*="alert"][data-type="tip"],
+[class*="Tip"] {
+  background-color: rgba(34,197,94,0.06) !important;
+  border-left: 3px solid #22c55e !important;
+  border-radius: 0 8px 8px 0 !important;
+}
+
+/* Note */
+[class*="callout"][data-type="note"],
+[class*="Note"] {
+  background-color: rgba(161,161,170,0.06) !important;
+  border-left: 3px solid #52525b !important;
+  border-radius: 0 8px 8px 0 !important;
+}
+
+/* ── Cards (quickstart grid) ───────────────────────────────── */
+[class*="card"], [class*="Card"] {
+  background-color: #0f0f11 !important;
+  border: 1px solid rgba(255,255,255,0.07) !important;
+  border-radius: 12px !important;
+  transition: border-color 0.15s, background-color 0.15s !important;
+}
+[class*="card"]:hover, [class*="Card"]:hover {
+  border-color: rgba(59,130,246,0.35) !important;
+  background-color: rgba(59,130,246,0.04) !important;
+}
+
+/* ── Search bar ────────────────────────────────────────────── */
+[class*="search"], [class*="Search"],
+input[type="search"] {
+  background-color: rgba(255,255,255,0.04) !important;
+  border: 1px solid rgba(255,255,255,0.10) !important;
+  border-radius: 8px !important;
+  color: #fafafa !important;
+}
+[class*="search"]:focus-within,
+input[type="search"]:focus {
+  border-color: rgba(59,130,246,0.50) !important;
+  background-color: rgba(255,255,255,0.06) !important;
+}
+
+/* ── Scrollbar ─────────────────────────────────────────────── */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: rgba(255,255,255,0.12);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255,255,255,0.22);
+}
+
+/* ── Endpoint path pill ────────────────────────────────────── */
+[class*="endpoint-path"],
+[class*="EndpointPath"],
+[class*="api-path"] {
+  font-family: 'JetBrains Mono', monospace !important;
+  font-size: 13px !important;
+  background-color: rgba(255,255,255,0.04) !important;
+  border: 1px solid rgba(255,255,255,0.08) !important;
+  border-radius: 8px !important;
+  padding: 6px 12px !important;
+  color: #e4e4e7 !important;
+}
+
+/* ── Parameters section ────────────────────────────────────── */
+[class*="parameter"],
+[class*="Parameter"] {
+  border-bottom: 1px solid rgba(255,255,255,0.05) !important;
+  padding: 12px 0 !important;
+}
+
+[class*="param-name"],
+[class*="paramName"] {
+  font-family: 'JetBrains Mono', monospace !important;
+  color: #f4f4f5 !important;
+  font-size: 13px !important;
+  font-weight: 600 !important;
+}
+
+[class*="param-type"],
+[class*="paramType"] {
+  font-family: 'JetBrains Mono', monospace !important;
+  font-size: 11px !important;
+  color: #60a5fa !important;
+  background: rgba(59,130,246,0.10) !important;
+  padding: 1px 6px !important;
+  border-radius: 4px !important;
+}
+
+[class*="required-badge"],
+[class*="RequiredBadge"] {
+  font-size: 10px !important;
+  color: #f87171 !important;
+  background: rgba(239,68,68,0.10) !important;
+  padding: 1px 6px !important;
+  border-radius: 4px !important;
+  font-family: 'JetBrains Mono', monospace !important;
+}
+
+/* ── "On this page" TOC ────────────────────────────────────── */
+[class*="toc"], [class*="TableOfContents"] {
+  border-left: 1px solid rgba(255,255,255,0.06) !important;
+  font-size: 12px !important;
+}
+
+[class*="toc"] a { color: rgba(255,255,255,0.40) !important; }
+[class*="toc"] a:hover,
+[class*="toc"] a[aria-current="true"] { color: #3b82f6 !important; }
+
+/* ── Footer ────────────────────────────────────────────────── */
+footer, [class*="footer"], [class*="Footer"] {
+  background-color: #000000 !important;
+  border-top: 1px solid rgba(255,255,255,0.06) !important;
+  color: rgba(255,255,255,0.30) !important;
+  font-size: 12px !important;
+}
+
+/* ── Primary button (Get API Key) ──────────────────────────── */
+[class*="primary-btn"],
+[class*="PrimaryButton"],
+a[class*="primary"] {
+  background-color: #3b82f6 !important;
+  color: #ffffff !important;
+  border-radius: 8px !important;
+  font-weight: 600 !important;
+  font-size: 13px !important;
+  transition: background-color 0.15s !important;
+}
+[class*="primary-btn"]:hover,
+[class*="PrimaryButton"]:hover {
+  background-color: #2563eb !important;
+}

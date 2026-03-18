@@ -1,0 +1,15 @@
+---
+title: "Agents Overview"
+description: "Understanding the core architecture of an Ortavox Agent"
+---
+
+# Agents
+
+An **Agent** is the central brain of an Ortavox interaction. 
+
+It handles conversation memory, system prompting, tool selection, and speech synthesis configuration. Every phone call or web call is connected to exactly one active Agent.
+
+## Core Properties
+- **Model Configuration**: Select which LLM (e.g., GPT-4o, Claude 3.5 Sonnet) powers the responses.
+- **Voice Configuration**: Define the personality and pitch using providers like ElevenLabs, Deepgram, or OpenAI.
+- **Tools**: Give the Agent the ability to query databases, check calendars, or transfer calls.

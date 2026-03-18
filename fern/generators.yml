@@ -1,0 +1,56 @@
+# yaml-language-server: $schema=https://schema.buildwithfern.dev/generators-yml.json
+api:
+  specs:
+    - openapi: ../openapi.json
+      overrides: openapi/overrides.yml
+
+default-group: local
+
+groups:
+  # Local generation (for development/testing)
+  local:
+    generators:
+      - name: fernapi/fern-typescript-sdk
+        output:
+          location: local-file-system
+          path: ../sdks/typescript
+        version: 3.33.1
+        config:
+          namespaceExport: OrtaVox
+          allowCustomFetcher: true
+
+      - name: fernapi/fern-python-sdk
+        output:
+          location: local-file-system
+          path: ../sdks/python
+        version: 4.3.1
+        config:
+          client_class_name: OrtaVox
+          package_name: ortavox
+
+  # Publish to npm + PyPI (triggered by CI on git tags)
+  publish:
+    generators:
+      - name: fernapi/fern-typescript-sdk
+        version: 3.33.1
+        output:
+          location: npm
+          package-name: ortavox-sdk
+          token: ${NPM_TOKEN}
+        github:
+          repository: OrtaVoxAI/ortavox-typescript-sdk
+        config:
+          namespaceExport: OrtaVox
+          allowCustomFetcher: true
+
+      - name: fernapi/fern-python-sdk
+        version: 4.3.1
+        output:
+          location: pypi
+          package-name: ortavox-sdk
+          token: ${PYPI_TOKEN}
+        github:
+          repository: OrtaVoxAI/ortavox-python-sdk
+        config:
+          client_class_name: OrtaVox
+          package_name: ortavox

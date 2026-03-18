@@ -1,0 +1,39 @@
+---
+title: "Transcriber"
+description: "Configure the Speech-to-Text engine for your Ortavox Agent"
+---
+
+# Transcriber
+
+The `transcriber` object defines the Speech-to-Text (STT) engine that converts spoken audio into text in real time. It is a **required** field when creating an Agent.
+
+## Schema
+
+```json
+{
+  "transcriber": {
+    "provider": "deepgram",
+    "model": "nova-3",
+    "language": "en"
+  }
+}
+```
+
+## Parameters
+
+| Property | Type | Required | Default | Description |
+|---|---|---|---|---|
+| `provider` | `string` | ✅ | — | STT provider (see supported providers below) |
+| `model` | `string` | ✅ | — | Provider-specific model name (e.g. `nova-3`) |
+| `language` | `string` | ✅ | `en` | BCP-47 language code (e.g. `en`, `fr`, `es`) |
+
+## Supported Providers
+
+| Provider | `provider` value | Notes |
+|---|---|---|
+| Deepgram | `deepgram` | Recommended — ultra-low latency, highest accuracy |
+| OpenAI | `openai` | Whisper-powered |
+| AssemblyAI | `assemblyai` | Strong for noisy environments |
+| Google | `google` | Multi-language support |
+| Speechmatics | `speechmatics` | Specialised across 50+ languages |
+| Azure | `azure` | Enterprise-grade |

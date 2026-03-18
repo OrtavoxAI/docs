@@ -1,0 +1,25 @@
+---
+title: "Architecture"
+description: "How Ortavox Core connects your clients to AI Providers"
+---
+
+# Architecture
+
+Ortavox is built to seamlessly orchestrate high-throughput, ultra-low latency audio streaming between your end clients and upstream AI models.
+
+## System Overview
+
+<iframe src="/assets/architecture-diagram.html" width="100%" height="650px" style={{ border: 'none', borderRadius: '12px' }} />
+
+## Components
+
+### Frontend Clients
+Your end-users can connect to Ortavox from multiple interfaces:
+- **Mobile & Browser**: Using the Ortavox Client SDKs via WebRTC.
+- **Telephony**: Standard SIP trunking for inbound and outbound calls.
+
+### Ortavox Core
+The engine that powers it all. It handles secure websocket/WebRTC connections, Media Handling, LLM orchestration, and your custom Business Logic (Tools).
+
+### AI Providers
+Ortavox proxies audio and text securely to leading AI providers (OpenAI, Deepgram, ElevenLabs, etc) while maintaining persistent websocket connections to minimize latency.
