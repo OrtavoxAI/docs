@@ -158,11 +158,11 @@ navigation:
 navbar-links:
   - type: minimal
     text: Website
-    href: https://ortavox.com
+    href: https://ortavox.ai
   - type: filled
     text: Dashboard
     rightIcon: fa-solid fa-chevron-right
-    href: https://dashboard.ortavox.com
+    href: https://ortavox.ai/dashboard
     rounded: true
 
 footer-links:
