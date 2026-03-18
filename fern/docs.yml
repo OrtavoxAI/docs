@@ -12,7 +12,6 @@ logo:
   dark: assets/logo.png
   href: https://ortavox.com
   height: 73
-  width: 150
 
 colors:
   accentPrimary:
