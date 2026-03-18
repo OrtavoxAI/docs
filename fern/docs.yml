@@ -2,6 +2,7 @@
 
 instances:
   - url: https://ortavox.docs.buildwithfern.com
+    custom-domain: docs.ortavox.ai
 
 title: Ortavox
 
