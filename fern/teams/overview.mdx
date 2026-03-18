@@ -1,0 +1,120 @@
+---
+title: "Teams"
+description: "Orchestrate multi-agent interactions with squad-style handoffs"
+---
+A **Team** lets you group multiple Agents into a coordinated squad. When a call is routed to a Team, Ortavox handles intelligent handoffs between member Agents based on context, intent, and your custom rules.
+
+## Use Cases
+
+- **Department routing** — front-desk Agent qualifies the caller, then hands off to Sales, Support, or Billing.
+- **Escalation chains** — a junior Agent handles common queries; complex issues transfer to a specialist.
+- **Multi-lingual support** — route to the Agent that matches the caller's language.
+
+## Core Properties
+
+| Property | Type | Description |
+|----------|------|-------------|
+| `name` | string | Display name for the team |
+| `description` | string | Optional internal description |
+| `definition` | object | Team configuration (members, overrides, variables) |
+| `isActive` | boolean | Whether the team is active (default: `true`) |
+| `tags` | string[] | Tags for filtering and organization |
+
+## Team Definition
+
+The `definition` field is a JSON object that describes how Agents work together:
+
+```json
+{
+  "members": [
+    {
+      "agentId": "agent_abc123",
+      "role": "receptionist",
+      "isEntry": true
+    },
+    {
+      "agentId": "agent_def456",
+      "role": "sales"
+    }
+  ],
+  "memberOverrides": {
+    "agent_abc123": {
+      "systemPrompt": "You are the front desk. Qualify callers and transfer."
+    }
+  },
+  "variables": [
+    {
+      "name": "business_hours",
+      "value": "9am-5pm EST"
+    }
+  ]
+}
+```
+
+### Members
+
+Each member entry defines an Agent participating in the team:
+
+- **`agentId`** — The Agent to include.
+- **`role`** — A label describing this member's responsibility.
+- **`isEntry`** — If `true`, this Agent handles the initial connection.
+
+### Member Overrides
+
+Override any Agent property for the scope of this team. This lets you reuse a single Agent across multiple teams with different prompts, tools, or voices.
+
+### Variables
+
+Shared key-value pairs accessible to all members during the call. Useful for passing business context (hours, locations, policies) without hard-coding it into each Agent's prompt.
+
+## API Reference
+
+All endpoints require a **private API key** (`sk_live_*`).
+
+### Create a Team
+
+```bash
+curl -X POST https://api.ortavox.com/v1/teams \
+  -H "Authorization: Bearer sk_live_..." \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "Support Squad",
+    "description": "Handles all inbound support calls",
+    "definition": {
+      "members": [
+        { "agentId": "agent_abc", "role": "triage", "isEntry": true },
+        { "agentId": "agent_def", "role": "specialist" }
+      ]
+    }
+  }'
+```
+
+### List Teams
+
+```bash
+curl https://api.ortavox.com/v1/teams \
+  -H "Authorization: Bearer sk_live_..."
+```
+
+### Get a Team
+
+```bash
+curl https://api.ortavox.com/v1/teams/:teamId \
+  -H "Authorization: Bearer sk_live_..."
+```
+
+### Update a Team
+
+```bash
+curl -X PATCH https://api.ortavox.com/v1/teams/:teamId \
+  -H "Authorization: Bearer sk_live_..." \
+  -H "Content-Type: application/json" \
+  -d '{ "name": "Updated Squad Name" }'
+```
+
+### Delete a Team
+
+```bash
+curl -X DELETE https://api.ortavox.com/v1/teams/:teamId \
+  -H "Authorization: Bearer sk_live_..."
+```

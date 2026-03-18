@@ -1,0 +1,158 @@
+---
+title: "Knowledge Base"
+description: "Give your Agents access to your own documents, URLs, and text with RAG"
+---
+A **Knowledge Base** stores your documents and makes them searchable by your Agents during live calls. Ortavox automatically chunks, embeds, and indexes your content so Agents can retrieve relevant context in real time.
+
+## How It Works
+
+1. **Create** a Knowledge Base and add source documents (files, URLs, or plain text).
+2. **Ortavox processes** each source — extracting text, splitting into chunks, and generating vector embeddings.
+3. **Attach** the Knowledge Base to one or more Agents.
+4. During a call, the Agent **retrieves** the most relevant chunks based on the conversation and injects them into its context.
+
+## Source Types
+
+| Type | Description | Max Size |
+|------|-------------|----------|
+| `file` | Upload PDFs, DOCX, TXT, CSV, and more via presigned S3 URL | 50 MB |
+| `url` | Crawl and index a web page | — |
+| `text` | Paste raw text directly | 50,000 chars |
+
+## Creating a Knowledge Base
+
+```bash
+curl -X POST https://api.ortavox.com/v1/knowledge-base \
+  -H "Authorization: Bearer sk_live_..." \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "Product Documentation",
+    "description": "All product docs for support agents",
+    "embeddingProvider": "openai",
+    "embeddingModel": "text-embedding-3-small"
+  }'
+```
+
+### Configuration Options
+
+| Field | Type | Default | Description |
+|-------|------|---------|-------------|
+| `name` | string | required | Display name |
+| `description` | string | — | Optional description |
+| `embeddingProvider` | string | `openai` | Provider for embeddings (`openai`, `cohere`, `ollama`) |
+| `embeddingModel` | string | `text-embedding-3-small` | Embedding model to use |
+| `autoRefresh` | boolean | `false` | Automatically re-process URL sources on a schedule |
+| `refreshInterval` | number | `24` | Hours between auto-refreshes (1–168) |
+
+## Adding Sources
+
+### File Upload
+
+File uploads use a two-step presigned URL flow:
+
+**Step 1** — Request an upload URL:
+
+```bash
+curl -X POST https://api.ortavox.com/v1/knowledge-base/:kbId/upload-url \
+  -H "Authorization: Bearer sk_live_..." \
+  -H "Content-Type: application/json" \
+  -d '{ "filename": "guide.pdf", "mimeType": "application/pdf" }'
+```
+
+**Step 2** — Upload the file directly to the returned URL:
+
+```bash
+curl -X PUT "<uploadUrl>" \
+  -H "Content-Type: application/pdf" \
+  --data-binary @guide.pdf
+```
+
+**Step 3** — Register the source:
+
+```bash
+curl -X POST https://api.ortavox.com/v1/knowledge-base/:kbId/sources \
+  -H "Authorization: Bearer sk_live_..." \
+  -H "Content-Type: application/json" \
+  -d '{
+    "sourceType": "file",
+    "filename": "guide.pdf",
+    "mimeType": "application/pdf",
+    "fileSizeBytes": 204800
+  }'
+```
+
+### URL Source
+
+```bash
+curl -X POST https://api.ortavox.com/v1/knowledge-base/:kbId/sources \
+  -H "Authorization: Bearer sk_live_..." \
+  -H "Content-Type: application/json" \
+  -d '{
+    "sourceType": "url",
+    "sourceUrl": "https://example.com/docs/getting-started"
+  }'
+```
+
+### Text Source
+
+```bash
+curl -X POST https://api.ortavox.com/v1/knowledge-base/:kbId/sources \
+  -H "Authorization: Bearer sk_live_..." \
+  -H "Content-Type: application/json" \
+  -d '{
+    "sourceType": "text",
+    "textTitle": "Return Policy",
+    "textContent": "Our return policy allows returns within 30 days..."
+  }'
+```
+
+## Chunking Options
+
+When adding file or URL sources, you can customize how content is split:
+
+| Field | Type | Default | Description |
+|-------|------|---------|-------------|
+| `chunkStrategy` | string | `auto` | Chunking method: `auto`, `semantic`, `sliding_window`, `table`, `code`, `faq` |
+| `chunkMaxTokens` | number | `512` | Maximum tokens per chunk (64–2048) |
+| `chunkOverlap` | number | `64` | Overlap tokens between chunks (0–256) |
+| `customMetadata` | object | — | Arbitrary key-value metadata attached to each chunk |
+
+## Attaching to an Agent
+
+Connect a Knowledge Base to an Agent through the Agent configuration. You can control how retrieval works:
+
+| Setting | Default | Description |
+|---------|---------|-------------|
+| **Mode** | `auto` | `auto` — Agent decides when to search. `tool` — exposed as a callable tool. `preload` — inject top results into every turn. |
+| **Top K** | `3` | Number of chunks to retrieve per query (1–10) |
+| **Similarity Threshold** | `0.6` | Minimum cosine similarity score (0–1) |
+| **Reranking** | `true` | Re-rank results for higher relevance |
+| **Keyword Search** | `true` | Combine vector search with BM25 keyword matching |
+| **Preload Max Tokens** | `2000` | Token budget when using `preload` mode (100–8000) |
+
+## Processing Status
+
+After adding a source, Ortavox processes it asynchronously. Check the status:
+
+```bash
+curl https://api.ortavox.com/v1/knowledge-base/:kbId/sources/:docId/status \
+  -H "Authorization: Bearer sk_live_..."
+```
+
+Status values: `pending` → `processing` → `ready` (or `failed` with `processingError`).
+
+## Search
+
+Query across one or more Knowledge Bases:
+
+```bash
+curl -X POST https://api.ortavox.com/v1/knowledge-base/search \
+  -H "Authorization: Bearer sk_live_..." \
+  -H "Content-Type: application/json" \
+  -d '{
+    "query": "What is the return policy?",
+    "knowledgeBaseIds": ["kb_abc123"],
+    "topK": 5,
+    "similarityThreshold": 0.7
+  }'
+```
